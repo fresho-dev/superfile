@@ -1,6 +1,6 @@
 [project]
 name = "superfile"
-version = "0.0.1"
+version = "0.0.2"
 description = "File-like interface for cloud block storage"
 authors = [ { name = "Oscar W" } ]
 license = { file = "LICENSE.md" }
