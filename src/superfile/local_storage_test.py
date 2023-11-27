@@ -42,9 +42,29 @@ class TestLocalStorage(unittest.TestCase):
         "subdir/subsubdir/file_3.txt",
     ]
     with _create_files(fpaths) as tmpdir:
-      result = list(superfile.list(tmpdir))
       inputs = [tmpdir + "/" + x for x in fpaths]
-      self.assertListEqual(inputs, result)
+
+      result = list(superfile.list(tmpdir))
+      self.assertListEqual(result, inputs)
+
+      mismatch = list(superfile.list(tmpdir + "_"))
+      self.assertListEqual(mismatch, [])
+
+  def test_list_all_files_with_glob(self):
+    fpaths = [
+        "file_0.txt",
+        "subdir/file_1.txt",
+        "subdir/subsubdir/file_2.txt",
+        "subdir/subsubdir/file_3.txt",
+    ]
+    with _create_files(fpaths) as tmpdir:
+      inputs = [tmpdir + "/" + x for x in fpaths]
+
+      result = list(superfile.list(tmpdir + "/*"))
+      self.assertListEqual(result, inputs)
+
+      mismatch = list(superfile.list(tmpdir + "_" + "/*"))
+      self.assertListEqual(mismatch, [])
 
 
 if __name__ == "__main__":
