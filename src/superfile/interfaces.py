@@ -12,16 +12,24 @@ class FileURI:
   subpath: str | None
 
   @staticmethod
-  def from_url(url: str, validate_scheme: str | None) -> "FileURI":
-    scheme, fullpath = url.split("://", 1)
+  def from_url(url: str, validate_scheme: str | None = None) -> "FileURI":
+    if "://" in url:
+      scheme, fullpath = url.split("://", 1)
+    else:
+      scheme = "file"
+      fullpath = url
+
     if validate_scheme and scheme != validate_scheme:
       raise ValueError(f"Invalid scheme: {scheme}.")
 
-    parts = fullpath.split("/", 1)
-    bucket = parts.pop(0)
-    subpath = parts.pop(0) if parts else None
+    if scheme == "file":
+      return FileURI(scheme=scheme, bucket="", subpath=fullpath)
 
-    return FileURI(scheme, bucket, subpath)
+    else:
+      parts = fullpath.split("/", 1)
+      bucket = parts.pop(0)
+      subpath = parts.pop(0) if parts else None
+      return FileURI(scheme, bucket, subpath)
 
 
 class FileLike:
