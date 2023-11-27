@@ -34,6 +34,15 @@ class TestLocalStorage(unittest.TestCase):
       with superfile.open(fpath, "r") as f:
         self.assertEqual(f.read(), text)
 
+  def test_read_text_file_from_path(self):
+    text = "hello world"
+    with tempfile.TemporaryDirectory() as tmpdir:
+      fpath = pathlib.Path(tmpdir) / "test.txt"
+      with open(fpath, "w") as f:
+        f.write(text)
+      with superfile.open(fpath, "r") as f:
+        self.assertEqual(f.read(), text)
+
   def test_list_all_files_with_prefix(self):
     fpaths = [
         "file_0.txt",

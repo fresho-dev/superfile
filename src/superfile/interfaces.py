@@ -13,6 +13,9 @@ class FileURI:
 
   @staticmethod
   def from_url(url: str, validate_scheme: str | None = None) -> "FileURI":
+    # Ensure url is a string.
+    url = str(url) if url else url
+
     if "://" in url:
       scheme, fullpath = url.split("://", 1)
     else:
