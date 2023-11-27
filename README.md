@@ -13,6 +13,13 @@ Importing the main module:
 import superfile
 ```
 
+Reading a local file:
+
+```python
+with superfile.open('my/local/path', 'r') as f:
+  contents = f.read()
+```
+
 Reading a text file:
 
 ```python
@@ -44,11 +51,13 @@ with superfile.open('gs://my_bucket_name/file.txt', 'wb') as f:
 ```
 
 Listing all files in a bucket:
+
 ```python
 fnames = list(superfile.list('gs://my_bucket_name'))
 ```
 
 Listing files with a prefix from a bucket:
+
 ```python
 prefix = 'abc'
 fnames = list(superfile.list(f'gs://my_bucket_name/{prefix}'))
