@@ -22,6 +22,9 @@ class LocalFile(interfaces.SuperFile):
       **kwargs,
   ) -> interfaces.FileLike:
     uri = interfaces.FileURI.from_url(path, validate_scheme=LocalFile.scheme)
+    # If we writing to a file, create the parent directory if it doesn't exist.
+    if mode in ("w", "a", "x", "wb", "ab", "xb"):
+      pathlib.Path(uri.subpath).parent.mkdir(parents=True, exist_ok=True)
     return open(uri.subpath, mode=mode, encoding=encoding, **kwargs)
 
   def list(self, path: str, **kwargs) -> Iterable[str]:
@@ -35,6 +38,5 @@ class LocalFile(interfaces.SuperFile):
 
   def exists(self, path: str, **kwargs) -> bool:
     uri = interfaces.FileURI.from_url(path, validate_scheme=LocalFile.scheme)
-    subpath = pathlib.Path(uri.subpath)
     subpath = pathlib.Path(uri.subpath)
     return subpath.exists()

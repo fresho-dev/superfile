@@ -88,6 +88,15 @@ class TestLocalStorage(unittest.TestCase):
       for fpath in inputs:
         self.assertTrue(superfile.exists(fpath))
 
+  def test_write_to_non_existing_subdirectory(self):
+    text = "hello world"
+    with tempfile.TemporaryDirectory() as tmpdir:
+      fpath = tmpdir + "/" + "subdir" + "/" + "test.txt"
+      with superfile.open(fpath, "w") as f:
+        f.write(text)
+      with open(fpath, "r") as f:
+        self.assertEqual(f.read(), text)
+
 
 if __name__ == "__main__":
   unittest.main()
